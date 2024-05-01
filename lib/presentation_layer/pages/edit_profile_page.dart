@@ -14,10 +14,11 @@ import '../../constants/methods.dart';
 import '../pages_widgets/EditProfileImageAvatarConsumer.dart';
 
 class EditProfilePage extends StatefulWidget {
+  final image = userModel.profilePic;
 
-   final image=userModel.profilePic;
-
-   EditProfilePage({super.key, });
+  EditProfilePage({
+    super.key,
+  });
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
@@ -25,7 +26,6 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController nameController = TextEditingController();
-
 
   TextEditingController emailController = TextEditingController();
 
@@ -47,7 +47,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     nameController.text = userModel.name;
     bioController.text = userModel.bio;
     emailController.text = userModel.email;
-
 
     super.initState();
   }
@@ -106,13 +105,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       height: 10,
                     ),
                     BlocConsumer<EditProfileCubit, EditProfileState>(
-                      listener: (context, state) {
-                        if (state is EditProfileSuccess) {
-                          Navigator.pop(context);
-                        }
+                      listener: (context, state) async {
+
                       },
                       builder: (context, state) {
-                        return AnimatedProgressButton(text: 'Edit', onPressed: onPressed,);
+                        return AnimatedProgressButton(
+                          text: 'Edit',
+                          onPressed: onPressed,
+                        );
                       },
                     ),
                     const Spacer(
@@ -132,7 +132,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         onPressed: () {
           Navigator.pop(context);
           //عشان يرجع صورة البروفايل في حالة انه مخترش الصورة الجديدة
-          context.read<LoginCubit>().image=null;
+          context.read<LoginCubit>().image = null;
         },
         icon: const Icon(Icons.arrow_back),
       ),

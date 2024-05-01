@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:chat_with_me/constants/strings.dart';
-import 'package:chat_with_me/constants/widgets/animated_progress_button.dart';
 import 'package:chat_with_me/presentation_layer/widgets/pin_put.dart';
 import 'package:chat_with_me/presentation_layer/widgets/snack_bar.dart';
 import 'package:flutter/foundation.dart';
@@ -83,40 +82,15 @@ class _OTpPageState extends State<OTpPage> {
                     },
                   ),
                   const SizedBox(height: 30,),
-                  SizedBox(
+                //TODO:
+                /*  SizedBox(
                       width: getWidth(context)*0.8,
                       height: 50,
                       child: AnimatedProgressButton(text: 'VERIFY', onPressed: onPressed,)),
-                 /* Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: CustomButton(
-                        text: 'VERIFY',
-                        onPressed: () {
-                          // if(_formKey.currentState!.validate){
-                          if (otpCode != null) {
-                            onPressed();
-                          } else {
-                            setState(() {
-                              showSnackBar(context, 'enter 6-digit code');
-                            });
-                          }
-                          // }
-                        },
-                      ),
-                    ),
-                  ),*/
+                */
+
                   const SizedBox(height: 20,),
-                /*  RoundedLoadingButton(
-                    controller: _btnController,
-                    color: MyColors.kPrimaryColor,
-                    onPressed: onPressed,
-                    width: getWidth(context)*.9,
-                    height: 55,
-                    child:  Text('VERIFY', style: MyTextStyles.headLine4.copyWith(color: Colors.white)),
-                  ),*/
+
                   const Spacer(
                     flex: 30,
                   ),

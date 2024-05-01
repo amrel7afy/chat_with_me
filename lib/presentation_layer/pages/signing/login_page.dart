@@ -3,8 +3,6 @@ import 'dart:developer';
 import 'package:chat_with_me/business_logic_layer/login_cubit/login_cubit.dart';
 import 'package:chat_with_me/business_logic_layer/login_cubit/login_states.dart';
 import 'package:chat_with_me/constants/my_colors.dart';
-import 'package:chat_with_me/constants/widgets/animated_progress_button.dart';
-import 'package:chat_with_me/presentation_layer/widgets/custom_button.dart';
 import 'package:chat_with_me/presentation_layer/widgets/snack_bar.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -118,13 +116,14 @@ class _LoginPageState extends State<LoginPage> {
                           keyboardType: TextInputType.phone,
                         ),
                       ),
-                      SizedBox(
+                  //TODO:
+                  /*    SizedBox(
                           width: getWidth(context) * 0.8,
                           child: AnimatedProgressButton(
                             text: 'Login',
                             onPressed: onPressed,
 
-                          )),
+                          )),*/
                       const Spacer(
                         flex: 30,
                       ),
