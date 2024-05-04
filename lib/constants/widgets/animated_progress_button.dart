@@ -9,9 +9,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../business_logic_layer/edit_profile_cubit/edit_profile_cubit.dart';
 import '../../constants/my_text_styles.dart';
 
-enum ButtonState { init, loading, done }
+enum ButtonState { init, loading, done, error }
 
-class AnimatedProgressButton<T,E> extends StatefulWidget {
+class AnimatedProgressButton extends StatefulWidget {
   final String text;
   final VoidCallback onPressed;
 
@@ -28,13 +28,14 @@ class AnimatedProgressButton<T,E> extends StatefulWidget {
 class _AnimatedProgressButtonState extends State<AnimatedProgressButton> {
   ButtonState state = ButtonState.init;
   bool isAnimating = true;
-@override
-  void setState(VoidCallback fn) {
 
-    if(mounted){
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
       super.setState(fn);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<EditProfileCubit, EditProfileState>(
@@ -44,70 +45,94 @@ class _AnimatedProgressButtonState extends State<AnimatedProgressButton> {
       builder: (context, state) {
         final isStretched = isAnimating || this.state == ButtonState.init;
         final isDone = this.state == ButtonState.done;
+        final isError = this.state == ButtonState.error;
 
         return Container(
           alignment: Alignment.center,
           child: AnimatedContainer(
             margin: const EdgeInsets.symmetric(horizontal: 20),
             height: 50,
-            width: this.state == ButtonState.init ? MediaQuery.of(context).size.width : 70,
+            width: this.state == ButtonState.init
+                ? MediaQuery.of(context).size.width
+                : 70,
             onEnd: () => setState(() => isAnimating = !isAnimating),
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeIn,
             child: isStretched
                 ? CustomButton(
-                text: widget.text,
-                onPressed: widget.onPressed,
-                textStyle: MyTextStyles.headLine2.copyWith(color: Colors.white),
-                backGroundColor: MyColors.kPrimaryColor)
-                : SmallButton(isDone),
+                    text: widget.text,
+                    onPressed: widget.onPressed,
+                    textStyle:
+                        MyTextStyles.headLine2.copyWith(color: Colors.white),
+                    backGroundColor: MyColors.kPrimaryColor)
+                : SmallButton(
+                    isDone,
+                    isError: isError,
+                  ),
           ),
         );
       },
     );
   }
 
-  void playAnimation(EditProfileState state) {
+  void playAnimation(EditProfileState state) async {
     if (state is EditProfileLoading) {
       setState(() => this.state = ButtonState.loading);
     } else if (state is EditProfileSuccess) {
-      setState(() async{
+      setState(() {
         this.state = ButtonState.done;
-       await Future.delayed(const Duration(milliseconds: 100));
-        Future.microtask(() => Navigator.pop(context));
       });
-
-
+      await Future.delayed(const Duration(milliseconds: 400));
+      Future.microtask(() => Navigator.pop(context));
+    } else if (state is EditProfileError) {
+      setState(() => this.state = ButtonState.error);
+      await Future.delayed(const Duration(milliseconds: 900));
+      setState(() => this.state = ButtonState.init);
     } else {
       setState(() => this.state = ButtonState.init);
     }
 
   }
 }
+
 class SmallButton extends StatelessWidget {
   final bool isDone;
+  final bool isError;
 
-  const SmallButton(
+  SmallButton(
     this.isDone, {
     super.key,
+    required this.isError,
   });
 
   @override
   Widget build(BuildContext context) {
-    final color = isDone ? Colors.green : MyColors.kPrimaryColor;
+    final containerColor = getColor();
+    final icon= getIcon();
+
     return Container(
-      decoration: BoxDecoration(shape: BoxShape.circle, color: color),
-      child: Center(
-        child: isDone
-            ? const Icon(
-                Icons.done,
-                color: Colors.white,
-                size: 30,
-              )
-            : const CircularProgressIndicator(
-                color: Colors.white,
-              ),
-      ),
+      decoration: BoxDecoration(shape: BoxShape.circle, color: containerColor),
+      child: Center(child: icon),
     );
+  }
+
+  Color getColor() {
+    if (isError) {
+      return Colors.red;
+    } else if (isDone) {
+      return Colors.green;
+    } else {
+      return MyColors.kPrimaryColor;
+    }
+  }
+
+  Widget getIcon() {
+    if (isError) {
+      return const Icon(Icons.close,color:Colors.white,);
+    } else if (isDone) {
+      return const Icon(Icons.check,color:Colors.white,);
+    } else {
+      return const CircularProgressIndicator(color: Colors.white,);
+    }
   }
 }

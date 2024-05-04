@@ -38,7 +38,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     });
   }
 
-  Future<void> saveImageToStore(BuildContext context) async {
+  Future<void> saveImageToStore(BuildContext context)  async {
      await context.read<LoginCubit>()
         .storeFileToStorage(
             "profilePic/${locator<FirebaseAuth>().currentUser!.uid}",
