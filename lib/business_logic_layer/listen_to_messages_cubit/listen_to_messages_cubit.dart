@@ -4,6 +4,7 @@ import 'package:chat_with_me/locator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 import '../../constants/strings.dart';
 import '../../data_layer/models/message_model.dart';
@@ -52,8 +53,13 @@ class ListenToMessagesCubit extends Cubit<ListenToMessagesState> {
   }
 
   void getTheTimeOfLastMessage() {
-     DateTime dateTime=DateTime.parse(messages[0].dateTime);
-    lastMessageDateTime='${dateTime.hour}:${dateTime.minute}';
-    log(lastMessageDateTime);
+    if (messages.isNotEmpty) {
+      DateTime dateTime = DateTime.parse(messages[0].dateTime);
+      // Formatting the DateTime to include AM/PM
+      lastMessageDateTime = DateFormat('h:mm a').format(dateTime); // 'a' denotes AM/PM
+      log(lastMessageDateTime);
+    } else {
+      log("No messages available.");
+    }
   }
 }

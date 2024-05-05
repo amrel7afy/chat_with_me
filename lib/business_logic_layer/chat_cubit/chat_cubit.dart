@@ -101,7 +101,7 @@ class ChatCubit extends Cubit<ChatStates> {
 
   List<MessageModel> messages = [];
 
-  listenToMessages({required String recieverId, required context}) async {
+  listenToMessages({required String receiverId, required context}) async {
     await LoginCubit.getCubit(context).getUserFromCache();
     emit(ChatLoadingState());
     try {
@@ -109,7 +109,7 @@ class ChatCubit extends Cubit<ChatStates> {
           .collection(kUserCollection)
           .doc(userModel.userId)
           .collection(kChatsCollection)
-          .doc(recieverId)
+          .doc(receiverId)
           .collection(kMessagesCollection)
           .orderBy('dateTime', descending: true)
           .snapshots()
@@ -131,15 +131,7 @@ class ChatCubit extends Cubit<ChatStates> {
     }
   }
 
-  listenToChats(context) async {
-    await LoginCubit.getCubit(context).getUserFromCache();
-    cubitFireStore
-        .collection(kUserCollection)
-        .doc(userModel.userId)
-        .collection(kChatsCollection)
-        .snapshots()
-        .listen((event) {});
-  }
+
 
 
 }

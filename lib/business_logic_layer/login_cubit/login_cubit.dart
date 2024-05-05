@@ -124,6 +124,7 @@ class LoginCubit extends Cubit<LoginStates> {
   }
 
   Future<bool> checkExistingUser() async {
+
     try {
       DocumentSnapshot documentSnapshot =
           await firestore.collection('users').doc(userModel.userId).get();

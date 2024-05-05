@@ -14,6 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../business_logic_layer/login_cubit/login_states.dart';
 import '../../constants/methods.dart';
 import '../../constants/my_text_styles.dart';
+import '../pages_widgets/confirm_informations_animated_progress_button.dart';
 import '../widgets/custom_button.dart';
 
 class InformationPage extends StatefulWidget {
@@ -42,15 +43,8 @@ class _InformationPageState extends State<InformationPage> {
         emailController.text.isNotEmpty &&
         nameController.text.isNotEmpty &&
         bioController.text.isNotEmpty) {
-     // _btnController.start(); // Start the button animation
-      // Simulate a loading process for 3 seconds before success state
-      Timer(const Duration(seconds:10), () {
-       // _btnController.success(); // Transition the button to success state
-        confirmInformation(); // Call the login function after the button animation completes
-      });
+      confirmInformation();
     } else {
-      // If validation fails or phone number is empty, reset button state
-    //  _btnController.reset();
     }
   }
 
@@ -154,17 +148,7 @@ class _InformationPageState extends State<InformationPage> {
                           SizedBox(
                               width: getWidth(context)*0.8,
                               height: 50,
-                              child: CustomButton(text: 'Continue', onPressed: onPressed,textStyle: MyTextStyles.headLine2.copyWith(color: Colors.white), backGroundColor: MyColors.kPrimaryColor)),
-                      /*    RoundedLoadingButton(
-                            onPressed: onPressed,
-                            height: 55,
-
-                            color: MyColors.kPrimaryColor,
-                            controller: _btnController,
-                            child: Text('Continue',
-                                style: MyTextStyles.headLine4
-                                    .copyWith(color: Colors.white)),
-                          )*/
+                              child: ConfirmInfoAnimatedProgressButton( onPressed: onPressed,))
                         ],
                       ),
                     )),
@@ -179,11 +163,6 @@ class _InformationPageState extends State<InformationPage> {
         }
         if (state is StoringFireStoreErrorState) {
           showSnackBar(context, state.error);
-        }
-        if (state is CacheSetSignedInToTrueState) {
-          Navigator.pushReplacementNamed(context,allChatsPage,
-              arguments: state.userModel);
-          log('Navigated');
         }
       },
     );

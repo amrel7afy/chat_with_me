@@ -25,27 +25,40 @@ class GetChatsCubit extends Cubit<GetChatsState> {
   getAllChats(BuildContext context) async {
     emit(GetChatsLoading());
     log('getAllChats');
-    await LoginCubit.getCubit(context).getUserFromCache();
-    log('userModel.userId:${userModel.userId}');
 
     try {
-      var querySnapshot = await cubitFireStore
+      await LoginCubit.getCubit(context).getUserFromCache();
+      log('userModel.userId:${userModel.userId}');
+
+      var chatStream = cubitFireStore
           .collection(kUserCollection)
           .doc(userModel.userId)
           .collection(kChatsCollection)
-          .get();
-      userChats = querySnapshot.docs
-          .map((chatDoc) => ChatModel.fromJson(chatDoc.data()))
-          .toList();
-      log(userChats.first.name.toString());
-      if (userChats.isEmpty) {
-        emit(NoChatsState());
-      }
-      emit(GetUserChatsSuccessState(userChats));
+          .snapshots();
+
+      chatStream.listen(
+            (querySnapshot) {
+          userChats = querySnapshot.docs
+              .map((chatDoc) => ChatModel.fromJson(chatDoc.data()))
+              .toList();
+
+          if (userChats.isEmpty) {
+            emit(NoChatsState());
+          } else {
+            emit(GetUserChatsSuccessState(userChats));
+            log(userChats.first.name.toString());
+          }
+        },
+        onError: (e) {
+          log('getAllChats stream error: $e');
+          emit(NoChatsState());
+          // emit(ChatGetUserChatsFailureState(e.toString()));
+        },
+      );
     } catch (e) {
-      log('getAllChats: $e');
+      log('getAllChats initialization error: $e');
       emit(NoChatsState());
-     // emit(ChatGetUserChatsFailureState(e.toString()));
+      // emit(ChatGetUserChatsFailureState(e.toString()));
     }
   }
 }

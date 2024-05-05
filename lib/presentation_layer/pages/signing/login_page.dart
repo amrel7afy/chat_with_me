@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:chat_with_me/business_logic_layer/login_cubit/login_cubit.dart';
 import 'package:chat_with_me/business_logic_layer/login_cubit/login_states.dart';
 import 'package:chat_with_me/constants/my_colors.dart';
+import 'package:chat_with_me/presentation_layer/pages_widgets/login_animated_progress_button.dart';
 import 'package:chat_with_me/presentation_layer/widgets/snack_bar.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../constants/methods.dart';
 import '../../../constants/my_text_styles.dart';
 import '../../../constants/strings.dart';
+import '../../../constants/widgets/animated_progress_button.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -116,14 +118,13 @@ class _LoginPageState extends State<LoginPage> {
                           keyboardType: TextInputType.phone,
                         ),
                       ),
-                  //TODO:
-                  /*    SizedBox(
+
+                    SizedBox(
                           width: getWidth(context) * 0.8,
-                          child: AnimatedProgressButton(
-                            text: 'Login',
+                          child: LoginAnimatedProgressButton(
                             onPressed: onPressed,
 
-                          )),*/
+                          )),
                       const Spacer(
                         flex: 30,
                       ),
@@ -145,13 +146,6 @@ class _LoginPageState extends State<LoginPage> {
               log(state.error);
               //   _btnController.reset();
             }
-          }
-          if (state is OTPSentState) {
-            Navigator.pushNamedAndRemoveUntil(
-                    context, otpPage, (route) => false,
-                    arguments: state.verificationId)
-                //  .then((value) => _btnController.reset())
-                ;
           }
         },
       ),

@@ -68,7 +68,7 @@ class AppRouter {
             MultiBlocProvider(
               providers: [
                 BlocProvider(
-                  create: (context) => AddRecieverChatDataCubit(),
+                  create: (context) => AddReceiverChatDataCubit(),
                 ), BlocProvider(
                   create: (context) => ListenToMessagesCubit(),
                 ),

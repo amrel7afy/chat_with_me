@@ -13,7 +13,7 @@ void setupLocator() {
   locator.registerLazySingleton<UserModel>(() => UserModel.init(), instanceName: 'init');
   locator.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
   locator.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
-  locator.registerLazySingleton<AddRecieverChatDataCubit>(() => AddRecieverChatDataCubit());
+  locator.registerLazySingleton<AddReceiverChatDataCubit>(() => AddReceiverChatDataCubit());
   locator.registerLazySingleton<ListenToMessagesCubit>(() => ListenToMessagesCubit());
   locator.registerLazySingleton<LoginCubit>(() => LoginCubit());
 }

@@ -4,10 +4,10 @@ import 'package:chat_with_me/business_logic_layer/edit_profile_cubit/edit_profil
 import 'package:chat_with_me/business_logic_layer/edit_profile_cubit/edit_profile_state.dart';
 import 'package:chat_with_me/business_logic_layer/login_cubit/login_cubit.dart';
 import 'package:chat_with_me/constants/my_colors.dart';
-import 'package:chat_with_me/constants/widgets/animated_progress_button.dart';
 import 'package:chat_with_me/constants/widgets/search_field.dart';
 import 'package:chat_with_me/constants/strings.dart';
 import 'package:chat_with_me/data_layer/models/information_field_model.dart';
+import 'package:chat_with_me/presentation_layer/pages_widgets/edit_animated_progress_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../constants/methods.dart';
@@ -109,8 +109,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
                       },
                       builder: (context, state) {
-                        return AnimatedProgressButton(
-                          text: 'Edit',
+                        return EditAnimatedProgressButton(
                           onPressed: onPressed,
                         );
                       },

@@ -30,7 +30,7 @@ class _ChatItemBuilderState extends State<ChatItemBuilder> {
   void initState() {
     ListenToMessagesCubit.getCubit(context).listenToMessages(
         receiverId: '+2${widget.chatModel.phoneNumber}', context: context);
-    context.read<UnreadMessagesCountCubit>().listenToUnreadMessagesCount(recieverId: '+2${widget.chatModel.phoneNumber}');
+    context.read<UnreadMessagesCountCubit>().listenToUnreadMessagesCount(receiverId: '+2${widget.chatModel.phoneNumber}');
 
     super.initState();
   }
@@ -64,14 +64,15 @@ class _ChatItemBuilderState extends State<ChatItemBuilder> {
                   backgroundColor: MyColors.kPrimaryColor,
                   backgroundImage: NetworkImage(widget.chatModel.profilePic)),
           trailing: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const UnReadMessagesBloc(),
               Text(
                 context.read<ListenToMessagesCubit>().lastMessageDateTime,
                 style: MyTextStyles.smallBody,
-              )
+              ),
+              const UnReadMessagesBloc(),
+
             ],
           ),
         );
@@ -105,8 +106,14 @@ class UnReadMessagesBloc extends StatelessWidget {
 
 
   CircleAvatar buildUnReadMessageAvatar(ExistsUnreadMessagesState state) {
+    double radius;
+    if(state.unreadCount>9){
+      radius=10.0;
+    }else{
+      radius=8.0;
+    }
     return CircleAvatar(
-        radius: 8,
+        radius: radius,
         backgroundColor: MyColors.kPrimaryColor,
         child: Text(
           state.unreadCount.toString(),
