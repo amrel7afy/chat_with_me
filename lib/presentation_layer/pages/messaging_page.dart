@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:chat_with_me/business_logic_layer/add_reciever_chat_data_cubit/add_reciever_chat_data_cubit.dart';
 import 'package:chat_with_me/business_logic_layer/chat_cubit/chat_cubit.dart';
 import 'package:chat_with_me/business_logic_layer/listen_to_messages_cubit/listen_to_messages_cubit.dart';
@@ -11,10 +13,13 @@ import 'package:chat_with_me/presentation_layer/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../business_logic_layer/add_reciever_chat_data_cubit/add_reciever_chat_data_state.dart';
 import '../../business_logic_layer/chat_cubit/chat_states.dart';
 import '../../data_layer/models/message_model.dart';
+import '../../main.dart';
 import '../pages_widgets/chat_bubbles.dart';
 import '../pages_widgets/getEitherNetworkImageAvatarOrAssetImage.dart';
+
 
 class MessagingPage extends StatefulWidget {
   final UserModel friendModel;
@@ -25,27 +30,42 @@ class MessagingPage extends StatefulWidget {
   State<MessagingPage> createState() => _MessagingPageState();
 }
 
-class _MessagingPageState extends State<MessagingPage> {
+class _MessagingPageState extends State<MessagingPage> with RouteAware{
   TextEditingController messageController = TextEditingController();
   final _scrollController = ScrollController();
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = ModalRoute.of(context);
+    if (route is PageRoute) {
+      routeObserver.subscribe(this, route);  // Ensure route is a PageRoute
+    }
+  }
+
+  @override
   void initState() {
-    ChatCubit.getCubit(context).listenToMessages(recieverId: '+2${widget.friendModel.phoneNumber}', context: context);
-    AddRecieverChatDataCubit.getCubit(context).addReceiverChatData(widget.friendModel, context);
+    ChatCubit.getCubit(context).listenToMessages(receiverId: '+2${widget.friendModel.phoneNumber}', context: context);
+    AddReceiverChatDataCubit.getCubit(context).addReceiverChatData(widget.friendModel, context);
     super.initState();
+  }
+  @override
+  void didPush() {
+    log("MessagingPage has been pushed onto the Navigator.");
+    context.read<AddReceiverChatDataCubit>().updateUnreadMessagesCountOfReceiver(receiverId: widget.friendModel.userId, isOpened: true);
   }
 
   @override
   void dispose() {
-    locator<AddRecieverChatDataCubit>().close();
+    locator<AddReceiverChatDataCubit>().close();
+    routeObserver.unsubscribe(this);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     ChatCubit.getCubit(context).listenToMessages(
-        recieverId: '+2${widget.friendModel.phoneNumber}', context: context);
+        receiverId: '+2${widget.friendModel.phoneNumber}', context: context);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -91,7 +111,7 @@ class _MessagingPageState extends State<MessagingPage> {
         } else {
           return Column(
               children: [
-                BlocBuilder<AddRecieverChatDataCubit,AddRecieverChatDataState>(builder: (context,state){
+                BlocBuilder<AddReceiverChatDataCubit,AddReceiverChatDataState>(builder: (context,state){
                   return Container(height: 0.00001,);
                 }),
                 BlocBuilder<ListenToMessagesCubit,ListenToMessagesState>(builder: (context,state){
@@ -172,7 +192,7 @@ class _MessagingPageState extends State<MessagingPage> {
               ChatCubit.getCubit(context).sendAMessage(
                   recieverId: widget.friendModel.userId,
                   message: messageController.text.trim());
-              context.read<AddRecieverChatDataCubit>().updateUnreadMessagesCountOfReciever(recieverId: widget.friendModel.userId);
+              context.read<AddReceiverChatDataCubit>().updateUnreadMessagesCountOfReceiver(receiverId: widget.friendModel.userId, isOpened: false);
             }
             setState(() {
               messageController.clear();
