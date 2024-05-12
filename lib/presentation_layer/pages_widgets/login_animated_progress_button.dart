@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:chat_with_me/business_logic_layer/edit_profile_cubit/edit_profile_state.dart';
 import 'package:chat_with_me/business_logic_layer/login_cubit/login_cubit.dart';
 import 'package:chat_with_me/business_logic_layer/login_cubit/login_states.dart';
 import 'package:chat_with_me/constants/my_colors.dart';
@@ -8,7 +7,6 @@ import 'package:chat_with_me/presentation_layer/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../business_logic_layer/edit_profile_cubit/edit_profile_cubit.dart';
 import '../../constants/my_text_styles.dart';
 import '../../constants/strings.dart';
 
@@ -85,7 +83,7 @@ class _LoginAnimatedProgressButtonState
       setState(() => this.state = ButtonState.loading);
     } else if (state is OTPSentState) {
       await otpSend(state);
-    } else if (state is LoginFailureState) {
+    } else if (state is LoginFailureState||state is LoginFireBaseAuthErrorState) {
       await failure();
     } else {
       setState(() => this.state = ButtonState.init);
@@ -103,9 +101,10 @@ class _LoginAnimatedProgressButtonState
       this.state = ButtonState.done;
     });
     await Future.delayed(const Duration(milliseconds: 400));
-    Future.microtask(() => Navigator.pushNamedAndRemoveUntil(
-        context, otpPage, (route) => false,
+    Future.microtask(() => Navigator.pushNamed(
+        context, otpPage,
         arguments: state.verificationId));
+    setState(() => this.state = ButtonState.init);
   }
 }
 

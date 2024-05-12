@@ -11,8 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../constants/methods.dart';
 import '../../../constants/my_text_styles.dart';
-import '../../../constants/strings.dart';
-import '../../../constants/widgets/animated_progress_button.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -40,26 +38,13 @@ class _LoginPageState extends State<LoginPage> {
     e164Key: '',
   );
 
-/*
-  final RoundedLoadingButtonController _btnController =
-      RoundedLoadingButtonController();
-*/
 
-  bool validated = false;
 
   @override
   Widget build(BuildContext context) {
     void onPressed() async {
-      log(validated.toString());
       if (formKey.currentState!.validate()) {
-        setState(() {
-          validated = true;
-        });
         login();
-      } else {
-        setState(() {
-          validated = false;
-        });
       }
     }
 
@@ -118,12 +103,10 @@ class _LoginPageState extends State<LoginPage> {
                           keyboardType: TextInputType.phone,
                         ),
                       ),
-
-                    SizedBox(
+                      SizedBox(
                           width: getWidth(context) * 0.8,
                           child: LoginAnimatedProgressButton(
                             onPressed: onPressed,
-
                           )),
                       const Spacer(
                         flex: 30,
@@ -181,7 +164,6 @@ class _LoginPageState extends State<LoginPage> {
       context,
       '+${selectedCountry.phoneCode}${phoneNumberController.text.trim()}',
     );
-
   }
 
   @override

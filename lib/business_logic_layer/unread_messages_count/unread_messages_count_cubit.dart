@@ -12,13 +12,13 @@ class UnreadMessagesCountCubit extends Cubit<UnreadMessagesCountState> {
   static UnreadMessagesCountCubit getCubit(BuildContext context) =>
       BlocProvider.of(context);
 
-  listenToUnreadMessagesCount({required String recieverId}) {
-    DocumentReference recieverDocument = locator<FirebaseFirestore>()
+  listenToUnreadMessagesCount({required String receiverId}) {
+    DocumentReference receiverDocument = locator<FirebaseFirestore>()
         .collection(kUserCollection)
         .doc(userModel.userId)
         .collection(kChatsCollection)
-        .doc(recieverId);
-    recieverDocument.snapshots().listen(
+        .doc(receiverId);
+    receiverDocument.snapshots().listen(
       (snapshot) {
         if (snapshot.exists) {
           final data = snapshot.data() as Map<String, dynamic>;

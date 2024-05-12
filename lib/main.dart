@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:chat_with_me/business_logic_layer/bloc_observer.dart';
 import 'package:chat_with_me/business_logic_layer/chat_cubit/chat_cubit.dart';
 import 'package:chat_with_me/business_logic_layer/login_cubit/login_cubit.dart';
-import 'package:chat_with_me/presentation_layer/pages/messaging_page.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -64,7 +63,7 @@ class ChatApp extends StatelessWidget {
             lazy: false),
       ],
       child: MaterialApp(
-        navigatorObservers: [routeObserver],
+        //navigatorObservers: [routeObserver],
         initialRoute: initialRoute,
         debugShowCheckedModeBanner: false,
         theme: themeData,

@@ -59,15 +59,6 @@ class LoginCubit extends Cubit<LoginStates> {
         verificationCompleted: verificationCompleted,
         verificationFailed: verificationFailed,
         codeSent: (String verificationId, int? resendToken) async {
-          /* Update the UI - wait for the user to enter the SMS code
-               String smsCode = '123456';
-
-          Create a PhoneAuthCredential with the code
-          PhoneAuthCredential credential = PhoneAuthProvider.credential(
-              verificationId: verificationId, smsCode: smsCode);
-
-               Sign the user in (or link) with the credential
-               await auth.signInWithCredential(credential);*/
           emit(OTPSentState(verificationId));
         },
         timeout: const Duration(seconds: 60),
@@ -90,6 +81,9 @@ class LoginCubit extends Cubit<LoginStates> {
   verificationFailed(FirebaseAuthException e) {
     if (e.code == 'invalid-phone-number') {
       emit(LoginFireBaseAuthErrorState('Enter a valid phone number.'));
+    }
+    else{
+      emit(LoginFireBaseAuthErrorState(e.message.toString()));
     }
 
     // Handle other errors

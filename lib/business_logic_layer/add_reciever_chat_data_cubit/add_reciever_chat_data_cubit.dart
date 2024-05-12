@@ -10,53 +10,55 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants/strings.dart';
 import '../../data_layer/models/user_model.dart';
+import 'add_reciever_chat_data_state.dart';
 
-part 'add_reciever_chat_data_state.dart';
 
-class AddRecieverChatDataCubit extends Cubit<AddRecieverChatDataState> {
+
+class AddReceiverChatDataCubit extends Cubit<AddReceiverChatDataState> {
   //عشان نضيف بيانات الشخص اللي هتبعتله رساله ونسدعي الميثود مرة واحدة فقط
-  bool isRecieverChatDataIsAdded = false;
+  bool isReceiverChatDataIsAdded = false;
   final FirebaseFirestore fireStore = locator<FirebaseFirestore>();
 
-  AddRecieverChatDataCubit() : super(AddRecieverChatDataInitial());
-  static AddRecieverChatDataCubit getCubit(BuildContext context) => BlocProvider.of(context);
+  AddReceiverChatDataCubit() : super(AddReceiverChatDataInitial());
+  static AddReceiverChatDataCubit getCubit(BuildContext context) => BlocProvider.of(context);
 
-   /*checkRecieverChatDataIsAdded() async {
-    isRecieverChatDataIsAdded =
-        await CacheHelper.getData(key: isRecieverChatDataIsAddedKey) ?? false;
-    if (isRecieverChatDataIsAdded) {
-      emit(RecieverChatDataIsAddedBefore());
-    }
-  }
 
-  Future setIsRecieverChatDataIsAddedKeyToTrue() async {
-    await CacheHelper.saveData(key: isRecieverChatDataIsAddedKey, value: true);
-  }*/
-
-   addReceiverChatData(UserModel recieverUserModel, context) async {
+   addReceiverChatData(UserModel receiverUserModel, context) async {
     LoginCubit.getCubit(context).getUserFromCache();
-    ChatModel chatModel=ChatModel.fromUserModel(recieverUserModel);
+    ChatModel chatModel=ChatModel.fromUserModel(receiverUserModel);
+    ChatModel myChatModel=ChatModel.fromUserModel(userModel);
       await fireStore
           .collection(kUserCollection)
           .doc(userModel.userId)
           .collection(kChatsCollection)
-          .doc(recieverUserModel.userId)
-          .set(chatModel.toJson())
+          .doc(receiverUserModel.userId)
+          .set(chatModel.toJson());
+    fireStore
+        .collection(kUserCollection)
+        .doc(receiverUserModel.userId)
+        .collection(kChatsCollection)
+        .doc(userModel.userId)
+        .set(myChatModel.toJson())
           .then((value) {
-            emit(AddRecieverChatDataToFireBaseSuccess());
+            emit(AddReceiverChatDataToFireBaseSuccess());
       }).catchError((e){
-        emit(RecieverChatDataIsAddedToFireBaseFailure(e.toString()));
+        emit(ReceiverChatDataIsAddedToFireBaseFailure(e.toString()));
       });
 
   }
 
-  updateUnreadMessagesCountOfReciever({required String recieverId})async{
-    DocumentReference recieverDoc = locator<FirebaseFirestore>()
+  updateUnreadMessagesCountOfReceiver({required String receiverId,required bool isOpened})async{
+    DocumentReference receiverDoc = locator<FirebaseFirestore>()
         .collection(kUserCollection)
-        .doc(recieverId)
+        .doc(receiverId)
         .collection(kChatsCollection)
         .doc(userModel.userId);
-    await recieverDoc.update({'unreadMessagesCount': FieldValue.increment(1)}).then((value) {
+    int count;
+     if(isOpened){
+       count=0;
+     }else{count=1;}
+
+    await receiverDoc.update({'unreadMessagesCount': FieldValue.increment(count)}).then((value) {
       emit(UpdateUnreadMessagesCountSuccessState());
     }).catchError((e){
       log('updateUnreadMessagesCountOfReceiver: ${e.toString()}');

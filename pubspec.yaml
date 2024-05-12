@@ -52,6 +52,7 @@ dependencies:
   font_awesome_flutter:
   cached_network_image:
   firebase_app_check:
+  intl:
 
 dev_dependencies:
   flutter_test:

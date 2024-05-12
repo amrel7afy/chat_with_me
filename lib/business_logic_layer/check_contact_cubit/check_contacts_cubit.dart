@@ -1,5 +1,5 @@
-import 'dart:developer';
 
+import 'package:chat_with_me/constants/strings.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +22,6 @@ class CheckContactsCubit extends Cubit<CheckContactsState> {
     if (status.isGranted) {
       try {
         await ContactsService.getContacts().then((value) {
-
           contacts = value;
         });
       } catch (ex) {
@@ -34,24 +33,41 @@ class CheckContactsCubit extends Cubit<CheckContactsState> {
     }
   }
 
-
-
   getMatchedUsersWithContacts(BuildContext context) {
     Set contactPhoneNumbers = contacts
         .expand((contact) => contact.phones ?? [])
-        .map((phone) => phone.value ?? '')
+        .map((phone) => _cleanPhoneNumber(phone.value) ?? '')
         .toSet();
 
     if (contactPhoneNumbers.isNotEmpty) {
-
       matchedUsersWithContacts = context
           .read<ChatCubit>()
           .users
           .where((user) => contactPhoneNumbers.contains(user.phoneNumber))
           .toList();
-      emit(CheckGetContactsState(matchedUsersWithContacts));
+      removeCurrentUserFromList();
+      if (matchedUsersWithContacts.isEmpty) {
+        emit(CheckNoMatchedContactsState(
+            'Hmm 😐, you can invite your contacts to our app! '));
+      } else {
+        emit(CheckGetContactsSuccessState(matchedUsersWithContacts));
+      }
     } else {
       emit(CheckNoContactsState('Hmm 😐, you need to save a new contact. '));
     }
+  }
+
+  void removeCurrentUserFromList() {
+    List<UserModel>filteredList=List.from(matchedUsersWithContacts);
+    for (var user in filteredList) {
+      if(user.phoneNumber==userModel.phoneNumber){
+        matchedUsersWithContacts.remove(user);
+      }
+    }
+  }
+
+  String _cleanPhoneNumber(String phoneNumber) {
+    // Remove spaces and dashes from phone number
+    return phoneNumber.replaceAll(RegExp(r'[ -]'), '');
   }
 }

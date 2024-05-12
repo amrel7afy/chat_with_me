@@ -1,30 +1,29 @@
-part of 'add_reciever_chat_data_cubit.dart';
 
-@immutable
-abstract class AddRecieverChatDataState {}
 
-class AddRecieverChatDataInitial extends AddRecieverChatDataState {}
+abstract class AddReceiverChatDataState {}
 
-class RecieverChatDataIsAddedBefore extends AddRecieverChatDataState {}
+class AddReceiverChatDataInitial extends AddReceiverChatDataState {}
 
-class LoadingRecieverChatDataIsAdded extends AddRecieverChatDataState {}
+class ReceiverChatDataIsAddedBefore extends AddReceiverChatDataState {}
 
-class AddRecieverChatDataToFireBaseSuccess extends AddRecieverChatDataState {}
+class LoadingReceiverChatDataIsAdded extends AddReceiverChatDataState {}
 
-class RecieverChatDataIsAddedToFireBaseFailure
-    extends AddRecieverChatDataState {
+class AddReceiverChatDataToFireBaseSuccess extends AddReceiverChatDataState {}
+
+class ReceiverChatDataIsAddedToFireBaseFailure
+    extends AddReceiverChatDataState {
   final String error;
 
-  RecieverChatDataIsAddedToFireBaseFailure(this.error);
+  ReceiverChatDataIsAddedToFireBaseFailure(this.error);
 }
-class UpdateUnreadMessagesCountSuccessState extends AddRecieverChatDataState {
+class UpdateUnreadMessagesCountSuccessState extends AddReceiverChatDataState {
 
 }
 
-class UpdateUnreadMessagesCountFailureState extends AddRecieverChatDataState {
+class UpdateUnreadMessagesCountFailureState extends AddReceiverChatDataState {
 
   final String error;
 
   UpdateUnreadMessagesCountFailureState(this.error);
 }
-//class RecieverChatDataAddedFailure extends AddRecieverChatDataState {}
+//class ReceiverChatDataAddedFailure extends AddReceiverChatDataState {}
