@@ -5,14 +5,11 @@ import 'package:chat_with_me/business_logic_layer/login_cubit/login_cubit.dart';
 import 'package:chat_with_me/constants/strings.dart';
 import 'package:chat_with_me/data_layer/models/message_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:contacts_service/contacts_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:permission_handler/permission_handler.dart';
-import '../../constants/methods.dart';
 import '../../data_layer/models/user_model.dart';
 
 import 'chat_states.dart';

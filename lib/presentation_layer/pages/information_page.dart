@@ -1,6 +1,4 @@
-import 'dart:async';
 import 'dart:core';
-import 'dart:developer';
 
 import 'package:chat_with_me/business_logic_layer/login_cubit/login_cubit.dart';
 import 'package:chat_with_me/constants/my_colors.dart';
@@ -13,9 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../business_logic_layer/login_cubit/login_states.dart';
 import '../../constants/methods.dart';
-import '../../constants/my_text_styles.dart';
 import '../pages_widgets/confirm_informations_animated_progress_button.dart';
-import '../widgets/custom_button.dart';
 
 class InformationPage extends StatefulWidget {
   const InformationPage({super.key});

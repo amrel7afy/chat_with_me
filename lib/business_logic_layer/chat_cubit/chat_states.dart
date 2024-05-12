@@ -1,4 +1,3 @@
-import 'package:contacts_service/contacts_service.dart';
 
 import '../../data_layer/models/message_model.dart';
 

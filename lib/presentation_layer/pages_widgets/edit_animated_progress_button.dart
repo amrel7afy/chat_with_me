@@ -99,7 +99,7 @@ class SmallButton extends StatelessWidget {
   final bool isDone;
   final bool isError;
 
-  SmallButton(
+  const SmallButton(
     this.isDone, {
     super.key,
     required this.isError,

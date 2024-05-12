@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:chat_with_me/data_layer/models/user_model.dart';
 import 'package:flutter/material.dart';
