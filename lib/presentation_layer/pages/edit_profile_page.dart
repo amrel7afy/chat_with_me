@@ -45,10 +45,24 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   void initState() {
     nameController.text = userModel.name;
+    context.read<EditProfileCubit>().name = nameController.text;
     bioController.text = userModel.bio;
+    context.read<EditProfileCubit>().bio = bioController.text;
     emailController.text = userModel.email;
+    context.read<EditProfileCubit>().email = emailController.text;
 
     super.initState();
+  }
+
+  bool validate() {
+    if (context.read<EditProfileCubit>().name != nameController.text ||
+        context.read<EditProfileCubit>().bio != bioController.text ||
+        context.read<EditProfileCubit>().email != emailController.text
+    ||context.read<LoginCubit>().image!=null
+    ) {
+      return true;
+    }
+    return false;
   }
 
   @override
@@ -105,12 +119,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       height: 10,
                     ),
                     BlocConsumer<EditProfileCubit, EditProfileState>(
-                      listener: (context, state) async {
-
-                      },
+                      listener: (context, state) async {},
                       builder: (context, state) {
                         return EditAnimatedProgressButton(
-                          onPressed: onPressed,
+                          onPressed: validate() ? onPressed : (){},
                         );
                       },
                     ),
@@ -137,6 +149,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ),
       title: const Text('Edit your profile'),
     );
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    bioController.dispose();
+    emailController.dispose();
+    super.dispose();
   }
 }
 /*final RoundedLoadingButtonController  _btnController =

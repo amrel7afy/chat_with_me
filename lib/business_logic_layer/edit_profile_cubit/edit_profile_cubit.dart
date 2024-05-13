@@ -15,7 +15,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   var userModelDoc = locator<FirebaseFirestore>()
       .collection(kUserCollection)
       .doc(userModel.userId);
-
+String name='';
+String email='';
+String bio='';
 
   updateUserProfile(BuildContext context,
       {required String name,
@@ -50,4 +52,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       emit(EditProfileError(e.toString()));
      });
   }
+
+
 }
