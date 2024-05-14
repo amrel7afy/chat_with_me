@@ -13,9 +13,9 @@ enum ButtonState { init, loading, done, error }
 
 class EditAnimatedProgressButton extends StatefulWidget {
 
-  final VoidCallback? onPressed;
+   VoidCallback? onPressed;
 
-  const EditAnimatedProgressButton({
+   EditAnimatedProgressButton({
     super.key,
 
     required this.onPressed,

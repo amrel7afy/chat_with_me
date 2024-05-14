@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'dart:developer';
 
 import 'package:chat_with_me/business_logic_layer/edit_profile_cubit/edit_profile_cubit.dart';
 import 'package:chat_with_me/business_logic_layer/edit_profile_cubit/edit_profile_state.dart';
@@ -54,15 +55,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
     super.initState();
   }
 
-  bool validate() {
+   validate() {
+    log(context.read<LoginCubit>().image?.path ?? 'heloo');
     if (context.read<EditProfileCubit>().name != nameController.text ||
         context.read<EditProfileCubit>().bio != bioController.text ||
-        context.read<EditProfileCubit>().email != emailController.text
-    ||context.read<LoginCubit>().image!=null
-    ) {
-      return true;
+        context.read<EditProfileCubit>().email != emailController.text ||
+        context.read<LoginCubit>().image != null) {
+
+      onPressed();
+      context.read<LoginCubit>().image=null;
+    }else{
+      (){};
     }
-    return false;
   }
 
   @override
@@ -72,6 +76,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
       emailController,
       bioController
     ];
+
+
     return Scaffold(
       appBar: buildAppBar(context),
       body: Form(
@@ -122,7 +128,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       listener: (context, state) async {},
                       builder: (context, state) {
                         return EditAnimatedProgressButton(
-                          onPressed: validate() ? onPressed : (){},
+                          onPressed:validate
                         );
                       },
                     ),

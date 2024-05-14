@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
-  final VoidCallback? onPressed;
+   VoidCallback? onPressed;
   final BorderRadius? borderRadius;
   final Color backGroundColor;
   final TextStyle textStyle;
 
-  const CustomButton({super.key,required this.textStyle, required this.text, required this.backGroundColor,required this.onPressed, this.borderRadius});
+   CustomButton({super.key,required this.textStyle, required this.text, required this.backGroundColor,required this.onPressed, this.borderRadius});
 
   @override
   Widget build(BuildContext context) {

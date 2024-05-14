@@ -198,7 +198,8 @@ class LoginCubit extends Cubit<LoginStates> {
       {required UserModel userModel, required BuildContext context}) async {
     emit(LoginLoadingState());
     try {
-      await storeFileToStorage("profilePic/${auth.currentUser!.uid}", image!)
+      File compressedFile = await compressImage(context.read<LoginCubit>().image!);
+      await storeFileToStorage("profilePic/${auth.currentUser!.uid}", compressedFile)
           .then((value) {
         String egyptPhoneNumberWithOutCountryCode =
             removeSubString(auth.currentUser!.phoneNumber!, '+2');

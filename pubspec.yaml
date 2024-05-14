@@ -53,6 +53,7 @@ dependencies:
   cached_network_image:
   firebase_app_check:
   intl:
+  flutter_image_compress:
 
 dev_dependencies:
   flutter_test:
