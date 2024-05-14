@@ -68,9 +68,9 @@ class AppRouter {
             MultiBlocProvider(
               providers: [
                 BlocProvider(
-                  create: (context) => AddReceiverChatDataCubit(),
+                  create: (context) => AddReceiverChatDataCubit(),lazy: false,
                 ), BlocProvider(
-                  create: (context) => ListenToMessagesCubit(),
+                  create: (context) => ListenToMessagesCubit(),lazy: false,
                 ),
               ],child: MessagingPage(friendModel: friendModel)
             ));

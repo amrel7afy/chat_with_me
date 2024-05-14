@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:chat_with_me/business_logic_layer/add_reciever_chat_data_cubit/add_reciever_chat_data_cubit.dart';
 import 'package:chat_with_me/business_logic_layer/chat_cubit/chat_cubit.dart';
 import 'package:chat_with_me/business_logic_layer/listen_to_messages_cubit/listen_to_messages_cubit.dart';
-import 'package:chat_with_me/business_logic_layer/listen_to_messages_cubit/listen_to_messages_state.dart';
 import 'package:chat_with_me/constants/my_colors.dart';
 import 'package:chat_with_me/constants/my_text_styles.dart';
 import 'package:chat_with_me/data_layer/models/user_model.dart';
@@ -13,7 +12,6 @@ import 'package:chat_with_me/presentation_layer/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../business_logic_layer/add_reciever_chat_data_cubit/add_reciever_chat_data_state.dart';
 import '../../business_logic_layer/chat_cubit/chat_states.dart';
 import '../../data_layer/models/message_model.dart';
 import '../../main.dart';
@@ -111,12 +109,7 @@ class _MessagingPageState extends State<MessagingPage> with RouteAware{
         } else {
           return Column(
               children: [
-                BlocBuilder<AddReceiverChatDataCubit,AddReceiverChatDataState>(builder: (context,state){
-                  return Container(height: 0.00001,);
-                }),
-                BlocBuilder<ListenToMessagesCubit,ListenToMessagesState>(builder: (context,state){
-                  return Container(height: 0.00001,);
-                }),
+
             if (state is ChatListenMessagesSuccessState)Expanded(
                 child: ListView.builder(
                     controller: _scrollController,
